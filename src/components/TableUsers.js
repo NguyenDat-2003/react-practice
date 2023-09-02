@@ -1,5 +1,4 @@
 import Table from "react-bootstrap/Table";
-import Container from "react-bootstrap/Container";
 import ReactPaginate from "react-paginate";
 
 import { useEffect, useState } from "react";
@@ -29,7 +28,7 @@ function TableUsers() {
   };
 
   return (
-    <Container>
+    <>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -74,7 +73,7 @@ function TableUsers() {
         containerClassName="pagination"
         activeClassName="active"
       />
-    </Container>
+    </>
   );
 }
 
