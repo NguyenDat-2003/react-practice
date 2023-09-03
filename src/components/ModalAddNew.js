@@ -1,12 +1,24 @@
 import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
+import { toast } from "react-toastify";
 
-function ModalAddNew({ show, handleClose }) {
+import { postCreateUser } from "../services/UserService";
+
+function ModalAddNew({ show, handleClose, handleUpdatTable }) {
   const [name, setName] = useState("");
   const [job, setJob] = useState("");
 
-  const handleAddUser = () => {
-    console.log("name = ", name, "job = ", job);
+  const handleAddUser = async () => {
+    let res = await postCreateUser(name, job);
+    if (res && res.id) {
+      handleClose();
+      setName("");
+      setJob("");
+      toast.success("Create Success");
+      handleUpdatTable({ first_name: name, id: res.id });
+    } else {
+      toast.error("Songthing Wrong !!!");
+    }
   };
 
   return (

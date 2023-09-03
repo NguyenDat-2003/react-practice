@@ -4,6 +4,7 @@ import ReactPaginate from "react-paginate";
 import { useEffect, useState } from "react";
 
 import { fetchAllUser } from "../services/UserService";
+import ModalAddNew from "./ModalAddNew";
 
 function TableUsers() {
   const [listUsers, setListUsers] = useState([]);
@@ -27,8 +28,28 @@ function TableUsers() {
     getUsers(e.selected + 1);
   };
 
+  const [isShowModalAddNew, setIsShowModalAddNew] = useState(false);
+
+  const handleClose = () => {
+    setIsShowModalAddNew(false);
+  };
+
+  const handleUpdatTable = (user) => {
+    setListUsers([user, ...listUsers]);
+  };
   return (
     <>
+      <div className="my-3 add-new">
+        <span>
+          <b>List Users: </b>
+        </span>
+        <button
+          className="btn btn-success"
+          onClick={() => setIsShowModalAddNew(true)}
+        >
+          Add New User
+        </button>
+      </div>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -72,6 +93,12 @@ function TableUsers() {
         breakLinkClassName="page-link"
         containerClassName="pagination"
         activeClassName="active"
+      />
+
+      <ModalAddNew
+        show={isShowModalAddNew}
+        handleClose={handleClose}
+        handleUpdatTable={handleUpdatTable}
       />
     </>
   );
