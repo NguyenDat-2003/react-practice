@@ -5,11 +5,15 @@ import { useEffect, useState } from "react";
 
 import { fetchAllUser } from "../services/UserService";
 import ModalAddNew from "./ModalAddNew";
+import ModalEditUser from "./ModalEditUser";
 
 function TableUsers() {
   const [listUsers, setListUsers] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const [isShowModalAddNew, setIsShowModalAddNew] = useState(false);
+  const [isShowModalEdit, setIsShowModalEdit] = useState(false);
+  const [dataUserEdit, setDataUserEdit] = useState({});
 
   useEffect(() => {
     getUsers(1);
@@ -28,14 +32,18 @@ function TableUsers() {
     getUsers(e.selected + 1);
   };
 
-  const [isShowModalAddNew, setIsShowModalAddNew] = useState(false);
-
   const handleClose = () => {
     setIsShowModalAddNew(false);
+    setIsShowModalEdit(false);
   };
 
   const handleUpdatTable = (user) => {
     setListUsers([user, ...listUsers]);
+  };
+
+  const handleEdit = (user) => {
+    setIsShowModalEdit(true);
+    setDataUserEdit(user);
   };
   return (
     <>
@@ -57,6 +65,7 @@ function TableUsers() {
             <th>Email</th>
             <th>First Name</th>
             <th>Last Name</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -69,12 +78,20 @@ function TableUsers() {
                   <td>{item.email}</td>
                   <td>{item.first_name}</td>
                   <td>{item.last_name}</td>
+                  <td>
+                    <button
+                      className="btn btn-warning mx-3"
+                      onClick={() => handleEdit(item)}
+                    >
+                      Edit
+                    </button>
+                    <button className="btn btn-danger">Delete</button>
+                  </td>
                 </tr>
               );
             })}
         </tbody>
       </Table>
-
       <ReactPaginate
         breakLabel="..."
         nextLabel="next >"
@@ -94,11 +111,16 @@ function TableUsers() {
         containerClassName="pagination"
         activeClassName="active"
       />
-
       <ModalAddNew
         show={isShowModalAddNew}
         handleClose={handleClose}
         handleUpdatTable={handleUpdatTable}
+      />
+
+      <ModalEditUser
+        show={isShowModalEdit}
+        handleClose={handleClose}
+        dataUserEdit={dataUserEdit}
       />
     </>
   );
