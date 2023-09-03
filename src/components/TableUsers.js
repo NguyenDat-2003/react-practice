@@ -3,6 +3,7 @@ import ReactPaginate from "react-paginate";
 
 import { useEffect, useState } from "react";
 import _ from "lodash";
+import { debounce } from "lodash";
 
 import { fetchAllUser } from "../services/UserService";
 import ModalAddNew from "./ModalAddNew";
@@ -13,6 +14,7 @@ function TableUsers() {
   const [listUsers, setListUsers] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const [searchUser, setSearchUser] = useState("");
 
   const [isShowModalAddNew, setIsShowModalAddNew] = useState(false);
   const [isShowModalEdit, setIsShowModalEdit] = useState(false);
@@ -71,6 +73,18 @@ function TableUsers() {
     setListUsers(cloneListUsers);
   };
 
+  const handleSearchUser = debounce((e) => {
+    let term = e.target.value;
+    if (term) {
+      let cloneListUsers = _.cloneDeep(listUsers);
+      cloneListUsers = cloneListUsers.filter((item) =>
+        item.email.includes(term)
+      );
+      setListUsers(cloneListUsers);
+    } else {
+      getUsers(1);
+    }
+  }, 1000);
   return (
     <>
       <div className="my-3 add-new">
@@ -83,6 +97,15 @@ function TableUsers() {
         >
           Add New User
         </button>
+      </div>
+      <div className="col-3 my-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Search user by Email"
+          // value={searchUser}
+          onChange={(e) => handleSearchUser(e)}
+        />
       </div>
       <Table striped bordered hover>
         <thead>
