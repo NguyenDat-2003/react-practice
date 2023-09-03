@@ -2,6 +2,7 @@ import Table from "react-bootstrap/Table";
 import ReactPaginate from "react-paginate";
 
 import { useEffect, useState } from "react";
+import _ from "lodash";
 
 import { fetchAllUser } from "../services/UserService";
 import ModalAddNew from "./ModalAddNew";
@@ -45,6 +46,14 @@ function TableUsers() {
     setIsShowModalEdit(true);
     setDataUserEdit(user);
   };
+
+  const handlePutUser = (user) => {
+    let cloneListUsers = _.cloneDeep(listUsers);
+    let index = listUsers.findIndex((item) => item.id === user.id);
+    cloneListUsers[index].first_name = user.first_name;
+    setListUsers(cloneListUsers);
+  };
+
   return (
     <>
       <div className="my-3 add-new">
@@ -121,6 +130,7 @@ function TableUsers() {
         show={isShowModalEdit}
         handleClose={handleClose}
         dataUserEdit={dataUserEdit}
+        handlePutUser={handlePutUser}
       />
     </>
   );
