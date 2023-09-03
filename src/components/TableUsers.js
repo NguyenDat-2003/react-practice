@@ -87,9 +87,25 @@ function TableUsers() {
       <Table striped bordered hover>
         <thead>
           <tr>
-            <th>ID</th>
+            <th className="sort-header">
+              <div>
+                <span className="me-3">ID</span>
+                <span>
+                  <i className="fa-solid fa-arrow-down-long"></i>
+                  <i className="fa-solid fa-arrow-up-long mx-2"></i>
+                </span>
+              </div>
+            </th>
             <th>Email</th>
-            <th>First Name</th>
+            <th>
+              <div>
+                <span className="me-3">First Name</span>
+                <span>
+                  <i className="fa-solid fa-arrow-down-long"></i>
+                  <i className="fa-solid fa-arrow-up-long mx-2"></i>
+                </span>
+              </div>
+            </th>
             <th>Last Name</th>
             <th>Actions</th>
           </tr>
