@@ -4,11 +4,13 @@ import ReactPaginate from "react-paginate";
 import { useEffect, useState } from "react";
 import _ from "lodash";
 import { debounce } from "lodash";
+import { CSVLink, CSVDownload } from "react-csv";
 
 import { fetchAllUser } from "../services/UserService";
 import ModalAddNew from "./ModalAddNew";
 import ModalEditUser from "./ModalEditUser";
 import ModalConfirm from "./ModalConfirm";
+import "./TableUsers.scss";
 
 function TableUsers() {
   const [listUsers, setListUsers] = useState([]);
@@ -85,18 +87,44 @@ function TableUsers() {
       getUsers(1);
     }
   }, 1000);
+
+  const csvData = [
+    ["firstname", "lastname", "email"],
+    ["Ahmed", "Tomi", "ah@smthing.co.com"],
+    ["Raed", "Labes", "rl@smthing.co.com"],
+    ["Yezzi", "Min l3b", "ymin@cocococo.com"],
+  ];
+
   return (
     <>
       <div className="my-3 add-new">
         <span>
           <b>List Users: </b>
         </span>
-        <button
-          className="btn btn-success"
-          onClick={() => setIsShowModalAddNew(true)}
-        >
-          Add New User
-        </button>
+        <div className="d-flex">
+          <label
+            htmlFor="test"
+            className="d-flex  align-items-center btn btn-warning px-12 py-6 label-test"
+          >
+            <i className="pe-1 fa-solid fa-file-import"></i> Import
+          </label>
+          <input id="test" type="file" hidden></input>
+
+          <CSVLink
+            data={csvData}
+            filename={"user.csv"}
+            className="btn btn-primary mx-3"
+            target="_blank"
+          >
+            <i className="fa-solid fa-file-arrow-down"></i> Export
+          </CSVLink>
+          <button
+            className="btn btn-success"
+            onClick={() => setIsShowModalAddNew(true)}
+          >
+            <i className="fa-solid fa-circle-plus"></i> Add New
+          </button>
+        </div>
       </div>
       <div className="col-3 my-3">
         <input
