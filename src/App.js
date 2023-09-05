@@ -7,6 +7,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import Header from "./components/Header";
 import TableUsers from "./components/TableUsers";
 import Home from "./components/Home";
+import Login from "./components/Login";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/users" element={<TableUsers />}></Route>
+            <Route path="/login" element={<Login />}></Route>
           </Routes>
         </Container>
       </div>
