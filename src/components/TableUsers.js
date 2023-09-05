@@ -5,12 +5,14 @@ import { useEffect, useState } from "react";
 import _ from "lodash";
 import { debounce } from "lodash";
 import { CSVLink, CSVDownload } from "react-csv";
+import Papa from "papaparse";
 
 import { fetchAllUser } from "../services/UserService";
 import ModalAddNew from "./ModalAddNew";
 import ModalEditUser from "./ModalEditUser";
 import ModalConfirm from "./ModalConfirm";
 import "./TableUsers.scss";
+import { toast } from "react-toastify";
 
 function TableUsers() {
   const [listUsers, setListUsers] = useState([]);
@@ -113,6 +115,48 @@ function TableUsers() {
     }
   };
 
+  const handleImportCSV = (e) => {
+    if (e.target.files[0]) {
+      let file = e.target.files[0];
+      if (file.type !== "text/csv") {
+        toast.error("Only accept CSV files !");
+      }
+
+      Papa.parse(file, {
+        // header: true,
+        complete: function (results) {
+          let rawCSV = results.data;
+          if (rawCSV.length > 0) {
+            if (rawCSV[0] && rawCSV[0].length === 3) {
+              if (
+                rawCSV[0][0] !== "email" ||
+                rawCSV[0][1] !== "first_name" ||
+                rawCSV[0][2] !== "last_name"
+              ) {
+                toast.error("Wrong format header CSV file !");
+              } else {
+                let result = [];
+                rawCSV.map((item, index) => {
+                  if (index > 0 && item.length === 3) {
+                    let obj = {};
+                    obj.email = item[0];
+                    obj.first_name = item[1];
+                    obj.last_name = item[2];
+                    result.push(obj);
+                  }
+                });
+                setListUsers(result);
+              }
+            } else {
+              toast.error("Wrong format CSV file !");
+            }
+          } else {
+            toast.error("Not found data on CSV files !");
+          }
+        },
+      });
+    }
+  };
   return (
     <>
       <div className="my-3 add-new">
@@ -126,7 +170,12 @@ function TableUsers() {
           >
             <i className="pe-1 fa-solid fa-file-import"></i> Import
           </label>
-          <input id="test" type="file" hidden></input>
+          <input
+            id="test"
+            type="file"
+            hidden
+            onChange={(e) => handleImportCSV(e)}
+          ></input>
 
           <CSVLink
             data={dataExport}
