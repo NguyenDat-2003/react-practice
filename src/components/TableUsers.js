@@ -17,6 +17,7 @@ function TableUsers() {
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [searchUser, setSearchUser] = useState("");
+  const [dataExport, setDataExport] = useState([]);
 
   const [isShowModalAddNew, setIsShowModalAddNew] = useState(false);
   const [isShowModalEdit, setIsShowModalEdit] = useState(false);
@@ -88,12 +89,29 @@ function TableUsers() {
     }
   }, 1000);
 
-  const csvData = [
-    ["firstname", "lastname", "email"],
-    ["Ahmed", "Tomi", "ah@smthing.co.com"],
-    ["Raed", "Labes", "rl@smthing.co.com"],
-    ["Yezzi", "Min l3b", "ymin@cocococo.com"],
-  ];
+  // const csvData = [
+  //   ["firstname", "lastname", "email"],
+  //   ["Ahmed", "Tomi", "ah@smthing.co.com"],
+  //   ["Raed", "Labes", "rl@smthing.co.com"],
+  //   ["Yezzi", "Min l3b", "ymin@cocococo.com"],
+  // ];
+
+  const getUsersExport = (event, done) => {
+    let result = [];
+    result.push(["ID", "Email", "Fisrt Name", "Last Name"]);
+    if (listUsers && listUsers.length) {
+      listUsers.map((item) => {
+        let arr = [];
+        arr[0] = item.id;
+        arr[1] = item.email;
+        arr[2] = item.first_name;
+        arr[3] = item.last_name;
+        result.push(arr);
+      });
+      setDataExport(result);
+      done();
+    }
+  };
 
   return (
     <>
@@ -111,10 +129,12 @@ function TableUsers() {
           <input id="test" type="file" hidden></input>
 
           <CSVLink
-            data={csvData}
+            data={dataExport}
             filename={"user.csv"}
             className="btn btn-primary mx-3"
             target="_blank"
+            asyncOnClick={true}
+            onClick={getUsersExport}
           >
             <i className="fa-solid fa-file-arrow-down"></i> Export
           </CSVLink>
