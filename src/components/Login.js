@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { loginApi } from "../services/UserService";
-import { TRUE } from "sass";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+
+import { UserContext } from "../context/UserContext";
 
 function Login() {
   const navigate = useNavigate();
+  const { loginContext } = useContext(UserContext);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
@@ -19,8 +23,8 @@ function Login() {
     setLoadingLogin(true);
     let res = await loginApi(email, password);
     if (res && res.token) {
-      localStorage.setItem("token", res.token);
-      navigate("/");
+      loginContext(email, res.token);
+      navigate("/home");
     } else {
       if (res && res.status === 400) {
         toast.error(res.data.error);
@@ -29,13 +33,16 @@ function Login() {
     setLoadingLogin(false);
   };
 
-  useEffect(() => {
-    let token = localStorage.getItem("token");
-    if (token) {
-      navigate("/");
-    }
-  }, []);
+  // useEffect(() => {
+  //   let token = localStorage.getItem("token");
+  //   if (token) {
+  //     navigate("/");
+  //   }
+  // }, []);
 
+  const handleBack = () => {
+    navigate("/");
+  };
   return (
     <div className="login-container col-12 col-sm-4 col-md-6 col-lg-4">
       <div className="title">Log in</div>
@@ -67,12 +74,12 @@ function Login() {
         disabled={email && password ? false : true}
         onClick={handleLogin}
       >
-        {loadingLogin && <i class="me-2 fas fa-spinner fa-spin"></i>}
+        {loadingLogin && <i className="me-2 fas fa-spinner fa-spin"></i>}
         Login
       </button>
       <div className="back">
         <i className="pe-1 fa-solid fa-chevron-left"></i>
-        Go back
+        <span onClick={handleBack}>Go back</span>
       </div>
     </div>
   );

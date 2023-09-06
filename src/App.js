@@ -7,16 +7,30 @@ import { Routes, Route, Link } from "react-router-dom";
 import Header from "./components/Header";
 import TableUsers from "./components/TableUsers";
 import Home from "./components/Home";
+import Default from "./components/Default";
 import Login from "./components/Login";
+import { useContext, useEffect } from "react";
+import { UserContext } from "./context/UserContext";
 
 function App() {
+  const { loginContext } = useContext(UserContext);
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      loginContext(
+        localStorage.getItem("email"),
+        localStorage.getItem("token")
+      );
+    }
+  }, []);
   return (
     <>
       <div className="app-container">
         <Header />
         <Container>
           <Routes>
-            <Route path="/" element={<Home />}></Route>
+            <Route path="/" element={<Default />}></Route>
+            <Route path="/home" element={<Home />}></Route>
             <Route path="/users" element={<TableUsers />}></Route>
             <Route path="/login" element={<Login />}></Route>
           </Routes>
