@@ -46,7 +46,7 @@ function Header() {
         </NavLink>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          {user && user.auth ? (
+          {(user && user.auth) || window.location.pathname === "/" ? (
             <>
               <Nav className="me-auto">
                 <NavLink to="/home" className="nav-link">
