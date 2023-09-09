@@ -21,7 +21,7 @@ function Login() {
       return;
     }
     setLoadingLogin(true);
-    let res = await loginApi(email, password);
+    let res = await loginApi(email.trim(), password);
     if (res && res.token) {
       loginContext(email, res.token);
       navigate("/home");
@@ -33,15 +33,14 @@ function Login() {
     setLoadingLogin(false);
   };
 
-  // useEffect(() => {
-  //   let token = localStorage.getItem("token");
-  //   if (token) {
-  //     navigate("/");
-  //   }
-  // }, []);
-
   const handleBack = () => {
     navigate("/");
+  };
+
+  const handlePressEnter = (e) => {
+    if (e && e.keyCode === 13) {
+      handleLogin();
+    }
   };
   return (
     <div className="login-container col-12 col-sm-4 col-md-6 col-lg-4">
@@ -59,6 +58,7 @@ function Login() {
           placeholder="Password..."
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={(e) => handlePressEnter(e)}
         />
         <i
           className={

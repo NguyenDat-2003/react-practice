@@ -4,6 +4,7 @@ import TableUsers from "../components/TableUsers";
 import Home from "../components/Home";
 import Default from "../components/Default";
 import Login from "../components/Login";
+import NotFound from "./NotFound";
 import PrivateRoute from "./PrivateRoute";
 
 function AppRoute() {
@@ -21,6 +22,7 @@ function AppRoute() {
             </PrivateRoute>
           }
         ></Route>
+        <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </>
   );

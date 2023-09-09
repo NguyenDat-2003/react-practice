@@ -159,11 +159,11 @@ function TableUsers() {
   };
   return (
     <>
-      <div className="my-3 add-new">
+      <div className="my-3 add-new d-sm-flex">
         <span>
           <b>List Users: </b>
         </span>
-        <div className="d-flex">
+        <div className="d-flex mt-sm-0 mt-2">
           <label
             htmlFor="test"
             className="d-flex  align-items-center btn btn-warning px-12 py-6 label-test"
@@ -195,7 +195,7 @@ function TableUsers() {
           </button>
         </div>
       </div>
-      <div className="col-3 my-3">
+      <div className="col-12 col-sm-4 my-3">
         <input
           type="text"
           className="form-control"
@@ -204,61 +204,63 @@ function TableUsers() {
           onChange={(e) => handleSearchUser(e)}
         />
       </div>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th className="sort-header">
-              <div>
-                <span className="me-3">ID</span>
-                <span>
-                  <i className="fa-solid fa-arrow-down-long"></i>
-                  <i className="fa-solid fa-arrow-up-long mx-2"></i>
-                </span>
-              </div>
-            </th>
-            <th>Email</th>
-            <th>
-              <div>
-                <span className="me-3">First Name</span>
-                <span>
-                  <i className="fa-solid fa-arrow-down-long"></i>
-                  <i className="fa-solid fa-arrow-up-long mx-2"></i>
-                </span>
-              </div>
-            </th>
-            <th>Last Name</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {listUsers &&
-            listUsers.length > 0 &&
-            listUsers.map((item, index) => {
-              return (
-                <tr key={item.id}>
-                  <td>{item.id}</td>
-                  <td>{item.email}</td>
-                  <td>{item.first_name}</td>
-                  <td>{item.last_name}</td>
-                  <td>
-                    <button
-                      className="btn btn-warning mx-3"
-                      onClick={() => handleEdit(item)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => handleDeleteUser(item)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-        </tbody>
-      </Table>
+      <div className="customize-table">
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th className="sort-header">
+                <div>
+                  <span className="me-3">ID</span>
+                  <span>
+                    <i className="fa-solid fa-arrow-down-long"></i>
+                    <i className="fa-solid fa-arrow-up-long mx-2"></i>
+                  </span>
+                </div>
+              </th>
+              <th>Email</th>
+              <th>
+                <div>
+                  <span className="me-3">First Name</span>
+                  <span>
+                    <i className="fa-solid fa-arrow-down-long"></i>
+                    <i className="fa-solid fa-arrow-up-long mx-2"></i>
+                  </span>
+                </div>
+              </th>
+              <th>Last Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {listUsers &&
+              listUsers.length > 0 &&
+              listUsers.map((item, index) => {
+                return (
+                  <tr key={item.id}>
+                    <td>{item.id}</td>
+                    <td>{item.email}</td>
+                    <td>{item.first_name}</td>
+                    <td>{item.last_name}</td>
+                    <td>
+                      <button
+                        className="btn btn-warning mx-3"
+                        onClick={() => handleEdit(item)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => handleDeleteUser(item)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </Table>
+      </div>
       <ReactPaginate
         breakLabel="..."
         nextLabel="next >"
